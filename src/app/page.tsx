@@ -42,6 +42,9 @@ export default function Home() {
 
   const disconnect = () => {
     setWallet(undefined);
+    setHash(undefined);
+    setRetrievedValue(undefined);
+    setStoreValue("");
     console.log("address after disconnect: ", wallet);
   }
 
@@ -87,18 +90,12 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    retrieve();
-  }, [wallet, hash]);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
       {wallet ? (
         <div className='flex flex-col items-center justify-center'>
-          <div className="text-white">
-            Connected Account: {wallet}
-          </div>
-          <div className='flex gap-4 items-center justify-center'>
+          <h3 className="text-black text-3xl font-bold mb-6">Connected Account: {wallet}</h3> {/* Estilo ajustado */}
+          <div className='flex gap-6 items-center justify-center'> {/* Añadido gap de 6 */}
             <input
               type="text"
               value={storeValue}
@@ -138,5 +135,5 @@ export default function Home() {
         </button>
       )}
     </div>
-  );
+  );  
 }
