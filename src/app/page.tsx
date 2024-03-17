@@ -10,6 +10,7 @@ import {
   createWalletClient,
   custom,
   stringify,
+  zeroAddress,
 } from 'viem'
 import { sepolia } from 'viem/chains'
 import 'viem/window'
@@ -33,10 +34,16 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   const connect = async () => {
+    console.log("address before connect: ", account);
     const [address] = await walletClient.requestAddresses();
     setAccount(address);
-    console.log({ address });
+    console.log("address after connect: ", address);
   };
+
+  const disconnect = () => {
+    setAccount(undefined);
+    console.log("address after disconnect: ", account);
+  }
 
   const store = async () => {
     if (!account) return;
@@ -121,6 +128,9 @@ export default function Home() {
             </div>
           )}
           {error && <div className="text-black mt-4">{error}</div>}
+          <button className="bg-white text-purple-500 px-4 py-2 mt-4 rounded" onClick={disconnect}>
+            Disconnect Wallet
+          </button>
         </div>
       ) : (
         <button className="bg-white text-purple-500 px-4 py-2 rounded" onClick={connect}>
