@@ -27,26 +27,26 @@ const walletClient = createWalletClient({
 })
 
 export default function Home() {
-  const [account, setAccount] = useState<Address>();
+  const [wallet, setWallet] = useState<Address>();
   const [hash, setHash] = useState<Hash>();
   const [retrievedValue, setRetrievedValue] = useState<BigInt>();
   const [storeValue, setStoreValue] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   const connect = async () => {
-    console.log("address before connect: ", account);
+    console.log("address before connect: ", wallet);
     const [address] = await walletClient.requestAddresses();
-    setAccount(address);
+    setWallet(address);
     console.log("address after connect: ", address);
   };
 
   const disconnect = () => {
-    setAccount(undefined);
-    console.log("address after disconnect: ", account);
+    setWallet(undefined);
+    console.log("address after disconnect: ", wallet);
   }
 
   const store = async () => {
-    if (!account) return;
+    if (!wallet) return;
 
     if (!storeValue.trim()) {
       setError('Please provide a value for storing.');
@@ -57,7 +57,7 @@ export default function Home() {
       console.log("Validating transaction...");
       const { request } = await publicClient.simulateContract({
         ...storeContract,
-        account,
+        account: wallet,
         functionName: "store",
         args: [BigInt(storeValue)],
       });
@@ -71,13 +71,13 @@ export default function Home() {
   };
 
   const retrieve = async () => {
-    if (!account) return;
+    if (!wallet) return;
 
     try {
       console.log("Reading contract...");
       const retrieved = await publicClient.readContract({
         ...storeContract,
-        account,
+        account: wallet,
         functionName: "retrieve",
       });
       setRetrievedValue(retrieved);
@@ -89,14 +89,14 @@ export default function Home() {
 
   useEffect(() => {
     retrieve();
-  }, [account, hash]);
+  }, [wallet, hash]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-      {account ? (
+      {wallet ? (
         <div className='flex flex-col items-center justify-center'>
           <div className="text-white">
-            Connected Account: {account}
+            Connected Account: {wallet}
           </div>
           <div className='flex gap-4 items-center justify-center'>
             <input
