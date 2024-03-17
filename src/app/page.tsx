@@ -51,22 +51,38 @@ export default function Home() {
     console.log({ hash })
   }
 
-  if (account)
-    return (
-      <>
-        <div>Connected: {account}</div>
-        <button onClick={mint}>Mint</button>
-        {receipt && (
-          <>
-            <div>
+  return (
+    <div className="min-h-screen bg-purple-500 flex items-center justify-center">
+      {account ? (
+        <div className='flex flex-col items-center justify-center'>
+          <div className="text-white">
+            Connected: {account}
+          </div>
+          <button className="bg-white text-purple-500 px-4 py-2 rounded mt-4" onClick={mint}>
+            Mint
+          </button>
+          {receipt && (
+            <div className="text-white mt-4">
               Receipt:{' '}
               <pre>
-                <code>{stringify(receipt, null, 2)}</code>
+                <code>{stringify(receipt)}</code>
               </pre>
             </div>
-          </>
-        )}
-      </>
-    )
-  return <button onClick={connect}>Connect Wallet</button>
+          )}
+           {hash && (
+            <div className="text-white flex flex-col items-center justify-center mt-4">
+              Transaction Hash:{' '}
+              <pre>
+                <code>{stringify(hash)}</code>
+              </pre>
+            </div>
+          )}
+        </div>
+      ) : (
+        <button className="bg-white text-purple-500 px-4 py-2 rounded" onClick={connect}>
+          Connect Wallet
+        </button>
+      )}
+    </div>
+  );
 }
