@@ -96,11 +96,8 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center">
           <h3 className="text-black text-3xl font-bold mb-6">
             Connected Account: {wallet}
-          </h3>{" "}
-          {/* Estilo ajustado */}
+          </h3>
           <div className="flex gap-6 items-center justify-center">
-            {" "}
-            {/* Añadido gap de 6 */}
             <input
               type="text"
               value={storeValue}
