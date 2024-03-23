@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   http,
   Address,
@@ -11,26 +11,26 @@ import {
   custom,
   stringify,
   zeroAddress,
-} from 'viem'
-import { sepolia } from 'viem/chains'
-import 'viem/window'
-import { storeContract } from './contracts/contract'
+} from "viem";
+import { sepolia } from "viem/chains";
+import "viem/window";
+import { storeContract } from "./contracts/contract";
 
 const publicClient = createPublicClient({
   chain: sepolia,
   transport: http(),
-})
+});
 
 const walletClient = createWalletClient({
   chain: sepolia,
   transport: custom(window.ethereum!),
-})
+});
 
 export default function Home() {
   const [wallet, setWallet] = useState<Address>();
   const [hash, setHash] = useState<Hash>();
   const [retrievedValue, setRetrievedValue] = useState<BigInt>();
-  const [storeValue, setStoreValue] = useState<string>('');
+  const [storeValue, setStoreValue] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const connect = async () => {
@@ -46,13 +46,13 @@ export default function Home() {
     setRetrievedValue(undefined);
     setStoreValue("");
     console.log("address after disconnect: ", wallet);
-  }
+  };
 
   const store = async () => {
     if (!wallet) return;
 
     if (!storeValue.trim()) {
-      setError('Please provide a value for storing.');
+      setError("Please provide a value for storing.");
       return;
     }
 
@@ -69,7 +69,7 @@ export default function Home() {
       setHash(hash);
       console.log({ hash });
     } catch (error) {
-      setError("Failed to store value.");
+      setTimeout(() => setError("Failed to store value."), 5000);
     }
   };
 
@@ -86,16 +86,21 @@ export default function Home() {
       setRetrievedValue(retrieved);
       console.log({ retrievedValue });
     } catch (error) {
-      setError("Failed to retrieve value.");
+      setTimeout(() => setError("Failed to retrieve value."), 5000);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
       {wallet ? (
-        <div className='flex flex-col items-center justify-center'>
-          <h3 className="text-black text-3xl font-bold mb-6">Connected Account: {wallet}</h3> {/* Estilo ajustado */}
-          <div className='flex gap-6 items-center justify-center'> {/* Añadido gap de 6 */}
+        <div className="flex flex-col items-center justify-center">
+          <h3 className="text-black text-3xl font-bold mb-6">
+            Connected Account: {wallet}
+          </h3>{" "}
+          {/* Estilo ajustado */}
+          <div className="flex gap-6 items-center justify-center">
+            {" "}
+            {/* Añadido gap de 6 */}
             <input
               type="text"
               value={storeValue}
@@ -103,10 +108,16 @@ export default function Home() {
               placeholder="Enter value"
               className="bg-white text-purple-500 px-4 py-2 rounded mt-4"
             />
-            <button className="bg-white text-purple-500 px-4 py-2 rounded mt-4" onClick={store}>
+            <button
+              className="bg-white text-purple-500 px-4 py-2 rounded mt-4"
+              onClick={store}
+            >
               Store
             </button>
-            <button className="bg-white text-purple-500 px-4 py-2 rounded mt-4" onClick={retrieve}>
+            <button
+              className="bg-white text-purple-500 px-4 py-2 rounded mt-4"
+              onClick={retrieve}
+            >
               Retrieve
             </button>
           </div>
@@ -125,15 +136,21 @@ export default function Home() {
             </div>
           )}
           {error && <div className="text-black mt-4">{error}</div>}
-          <button className="bg-white text-purple-500 px-4 py-2 mt-4 rounded" onClick={disconnect}>
+          <button
+            className="bg-white text-purple-500 px-4 py-2 mt-4 rounded"
+            onClick={disconnect}
+          >
             Disconnect Wallet
           </button>
         </div>
       ) : (
-        <button className="bg-white text-purple-500 px-4 py-2 rounded" onClick={connect}>
+        <button
+          className="bg-white text-purple-500 px-4 py-2 rounded"
+          onClick={connect}
+        >
           Connect Wallet
         </button>
       )}
     </div>
-  );  
+  );
 }
