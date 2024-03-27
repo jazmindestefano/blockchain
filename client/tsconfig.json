@@ -18,9 +18,14 @@
       }
     ],
     "paths": {
-      "@/*": ["client/src/*"]
+      "@/*": ["./client/src/*"]
     }
   },
-  "include": ["client/next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "client/next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
